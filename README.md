@@ -19,6 +19,35 @@ The focus is accountable multi-model collaboration for sustained work, not simpl
 
 These are design advantages, not measured claims of superiority. Actual quality and quota savings depend on the task, models and host behavior.
 
+## Test Usage and Cost Comparison
+
+The test used **Codex through a ChatGPT Plus subscription**. All dollar amounts below follow the supplied reports' API-equivalent calculation basis; **they are not actual Plus charges**.
+
+Verification environment: Codex desktop **`26.930.3930.0`**, CLI **`0.160.0`**. These are the versions checked when documenting the test, not a claim about the runtime throughout the experiment.
+
+### Recorded Agent Usage
+
+| Agent | Recorded cumulative tokens | API-equivalent cost |
+| --- | ---: | ---: |
+| Astra main chat | **29,973,925** | Approximately **$73.16** |
+| Sol main implementation chat | **188,004,102** | Approximately **$49.68** |
+
+The full experiment recorded **219,887,291 tokens**, equivalent to approximately **$123.62** on the reports' API calculation basis. The table lists only the two main chats; the experiment total includes all recorded calls.
+
+Cumulative tokens include cached input and repeatedly carried conversation context, not an equal amount of newly generated content.
+
+### Mixed Workflow and Single-Model Estimates
+
+| Approach | Cumulative tokens | API-equivalent cost | Basis |
+| --- | ---: | ---: | --- |
+| Mixed workflow | **219.887M** | **$123.62** | Recorded usage; cost conversion |
+| Astra High only | Approximately **211.370M** | Approximately **$344.81** | Estimate; not rerun |
+| GPT-6.1 Sol High only | Approximately **211.370M** | Approximately **$48.84** | Estimate; not rerun |
+
+The single-model comparison assumes **211.370M** tokens of effective work after excluding cross-chat communication and delegation-specific Skill context, while retaining normal implementation, testing and necessary recovery records. It is a cost estimate, **not evidence that different models would consume the same tokens or achieve the same quality**.
+
+**Test-only notice:** This is a local test case provided for reference, not a guarantee that the workflow will work or reproduce these results on another machine. Compatibility, model/tool availability, quality and quota savings may differ. Users must verify their own environment, assess risks and keep appropriate backups. The plugin is provided as-is; to the extent permitted by applicable law, the author is not responsible for losses arising from its use.
+
 ## What It Does
 
 | Role | Responsibility | Route |

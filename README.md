@@ -8,15 +8,16 @@ Version: **0.1.3**. Author: **yueanipy**. Plugin and skill display names describ
 
 ## Project Advantages
 
-Use it for sustained work where planning, implementation and acceptance benefit from distinct roles, without having to repeat the handoff instructions for every task.
+The focus is accountable multi-model collaboration for sustained work, not simply running more agents.
 
-- **Keep expensive judgment focused.** Astra designs and independently accepts; Sol handles sustained implementation. Routine substeps, progress and quota recovery do not require owner callbacks.
-- **Reduce coordination noise without dropping evidence.** Meaningful milestone packets combine all unreviewed changes, failed checks and open work rather than sending an update after every small step.
-- **Make interrupted work recoverable.** Local contracts, state and progress preserve the assignment and evidence outside chat history, without treating a queued message as completed work.
-- **Keep optional help optional.** Luna is explicitly selected for mechanical work; DeepSeek supplies a read-only second perspective. Small edits stay local, and there is no forced four-model chain.
-- **Load guidance only when needed.** Three small skill entries lead to operation-specific support. The package adds no MCP server, daemon or timer, and repository READMEs are not installed as agent instructions.
+- **A complete delegation loop, not just task splitting.** Planning, implementation and acceptance have distinct owners. Concrete rework returns to the same healthy implementer chat instead of spawning another writer.
+- **Deliverable-driven communication, not scheduled check-ins.** Small steps stay with Sol for testing and repair. Meaningful milestones combine all unreviewed work, keeping expensive owner calls focused on decisions and acceptance rather than routine status or quota recovery.
+- **Evidence-backed acceptance, not verbal completion.** Checks and findings bind to the actual candidate version. Failures and untested scope remain visible; queued messages, completed execution and accepted results are separate states.
+- **Recoverable long tasks, not dependence on full chat history.** Local contracts, checkpoints and evidence pointers preserve the current assignment across interruptions without requiring transcript replay or an owner wakeup solely for recovery.
+- **Controlled collaboration, not unchecked writer growth.** One active chat per model/workstream, non-overlapping writes and explicit replacement/stop boundaries reduce duplicate work and conflicting edits. These are workflow safeguards, not OS-enforced locks.
+- **Lightweight adoption without a forced model chain.** Skills load support on demand and add no MCP server, daemon or timer. Bounded edits stay local, helpers are optional, and Astra effort remains the user's choice.
 
-The goal is less unnecessary orchestration with accountable acceptance, not the lowest token count at any cost. It is not a guarantee of savings or higher success rates than a single agent; those outcomes need task-specific measurement.
+These are design advantages, not measured claims of superiority. Actual quality and quota savings depend on the task, models and host behavior.
 
 ## What It Does
 

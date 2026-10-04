@@ -112,40 +112,19 @@ Choose either an AI-assisted edit or a manual edit. Both modify the downloaded s
 
 ### Option 1: Ask Another Coding Model
 
-Give a coding model with file access the prompt below. Replace the angle-bracket fields with your actual folder, requested settings and installation choice. Do not include API keys.
+With the downloaded repository open in your coding model's workspace, use this prompt. Only add the models and reasoning levels you want at the end; no path or installation options are required.
 
 ```text
-Update my local Agent Task Handoff plugin.
-Repository folder: <absolute path to the full downloaded repository>
-Role to change: <delegated Sol / mechanical Luna / DeepSeek reviewer>
-Target model ID: <exact supported model ID>
-Target effort: <supported reasoning setting>
-Install the edited copy locally: <yes / no>
+Please update the downloaded Agent Task Handoff plugin to match my model choices
+below. Read the repository guidance, edit the relevant dispatch rules and matching
+descriptions, and preserve all other roles and boundaries. Leave accounts,
+credentials, context limits and global model defaults unchanged. Check the edits
+and update the local installed copy, handling any necessary marketplace registration
+without disrupting active tasks. If a requested model is unsupported or the change
+is ambiguous, explain and ask. Finish with a brief report of changes, installation
+results and anything not verified.
 
-Make the actual file edits. Read the README, Routes and Pinning in
-plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md,
-and only the role support needed for this change. Update the requested route and
-matching descriptions, model/provider checks and both README role tables.
-Do not blindly replace every model name. Check compatibility where possible;
-if support or a model-family change is unresolved, explain and ask rather than
-silently substituting another model or disabling identity checks.
-
-Preserve plugin/skill IDs, role permissions, evidence, delivery and recovery
-boundaries. Keep Astra effort user-controlled, callbacks on the receiver's actual
-settings, and direct Sol on its selected settings. Do not change global model
-defaults, context limits, credentials or unrelated rules. Edit source, not cache.
-A local version bump is optional, not a prerequisite.
-
-Check the diff and run the repository validator if available; report unrun checks.
-If installation is requested, do not refresh files used by active delegated work.
-Inspect codex plugin marketplace list: add this folder if unregistered; keep the
-source if already pointing here; remove and re-add only this marketplace if it
-points elsewhere. Then reinstall the plugin. Resolve duplicate enabled copies
-without changing unrelated plugins. If installation is not requested, leave host
-configuration unchanged. Do not create test chats or call models for this edit.
-
-Report changed files, resulting model/effort, checks, and whether installation
-actually succeeded. Do not claim a real model invocation was tested.
+My model choices: <add your desired models and reasoning levels here>
 ```
 
 ### Option 2: Edit the Files Yourself

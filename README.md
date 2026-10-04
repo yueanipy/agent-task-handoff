@@ -100,16 +100,123 @@ This checks packaging, references, runtime language and invocation policy; it do
 
 ## Change Models Locally
 
-After downloading the **full repository**:
+Choose either an AI-assisted edit or a manual edit. Both modify the downloaded source, then update the installed copy if needed. They do not configure a provider or API key.
 
-1. Edit **Routes and Pinning** in [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md) to change the model ID and effort. Update related names and model checks in the skills. Keep role boundaries intact; Astra effort remains user-controlled.
-2. Increase the version in [plugin.json](plugins/agent-task-handoff/plugin.json).
-3. With no active delegated tasks, reinstall from the repository root. If this marketplace was previously registered, first run `codex plugin marketplace remove codex-agent-task-handoff`, then:
+### Before You Start
+
+- Download and extract the **full repository**, for example with GitHub's **Code → Download ZIP**. Open the extracted folder containing `README.md`, `.agents/` and `plugins/`, not the plugin-only release ZIP.
+- **Model ID** identifies the model, such as `gpt-6.1-sol`. **Effort** is its reasoning setting, such as `high` or `max`; it is not a context limit. Supported settings depend on the actual model/provider.
+- A **marketplace** is a catalog telling Codex where to find the plugin. Here its name is `codex-agent-task-handoff`; it is not an account or a paid service. Registering it does not run models.
+- Codex uses an **installed copy/cache**, not just the files you edited. A registered GitHub source still points to its downloaded snapshot, not your separate local folder.
+- You do **not** have to increase `plugin.json`'s version for a personal local edit. A version bump is useful when publishing a distinct release.
+
+### Option 1: Ask Another Coding Model
+
+Give a coding model with file access the prompt below. Replace the angle-bracket fields with your actual folder, requested settings and installation choice. Do not include API keys.
+
+```text
+Update my local Agent Task Handoff plugin.
+Repository folder: <absolute path to the full downloaded repository>
+Role to change: <delegated Sol / mechanical Luna / DeepSeek reviewer>
+Target model ID: <exact supported model ID>
+Target effort: <supported reasoning setting>
+Install the edited copy locally: <yes / no>
+
+Make the actual file edits. Read the README, Routes and Pinning in
+plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md,
+and only the role support needed for this change. Update the requested route and
+matching descriptions, model/provider checks and both README role tables.
+Do not blindly replace every model name. Check compatibility where possible;
+if support or a model-family change is unresolved, explain and ask rather than
+silently substituting another model or disabling identity checks.
+
+Preserve plugin/skill IDs, role permissions, evidence, delivery and recovery
+boundaries. Keep Astra effort user-controlled, callbacks on the receiver's actual
+settings, and direct Sol on its selected settings. Do not change global model
+defaults, context limits, credentials or unrelated rules. Edit source, not cache.
+A local version bump is optional, not a prerequisite.
+
+Check the diff and run the repository validator if available; report unrun checks.
+If installation is requested, do not refresh files used by active delegated work.
+Inspect codex plugin marketplace list: add this folder if unregistered; keep the
+source if already pointing here; remove and re-add only this marketplace if it
+points elsewhere. Then reinstall the plugin. Resolve duplicate enabled copies
+without changing unrelated plugins. If installation is not requested, leave host
+configuration unchanged. Do not create test chats or call models for this edit.
+
+Report changed files, resulting model/effort, checks, and whether installation
+actually succeeded. Do not claim a real model invocation was tested.
+```
+
+### Option 2: Edit the Files Yourself
+
+#### 1. Change the Model and Effort
+
+Open the full repository in an editor such as VS Code. Open [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md) and find **Routes and Pinning** near the top.
+
+For example, to change only delegated Sol's effort from High to Medium, replace:
+
+```markdown
+- Astra-led implementer: model `gpt-6.1-sol`, effort `high`.
+```
+
+with:
+
+```markdown
+- Astra-led implementer: model `gpt-6.1-sol`, effort `medium`.
+```
+
+This is a syntax example, not a recommendation to lower effort. To change the model too, replace the ID inside backticks with a model your host actually supports. It affects delegated Sol, not your default model or a directly selected Sol chat. Astra effort remains selected by you.
+
+Use the editor's folder search, for example **Ctrl+Shift+F** in VS Code, to update matching labels such as `Sol High` in the relevant Skill and both README tables. Do not replace unrelated roles. Changing a model family or DeepSeek effort also requires consistent ownership/provider/identity checks; use Option 1 if unsure rather than removing checks.
+
+#### 2. Open a Terminal in the Repository Folder
+
+In VS Code, select **Terminal → New Terminal**. The commands below need Codex CLI available. Run `codex --version` first; if it is not recognized, install/configure [Codex CLI](https://developers.openai.com/codex/cli) before continuing. If `codex plugin` is unsupported, update to a plugin-capable version.
+
+If the terminal is in another folder, change directories. This path is only an example; replace it with your extracted repository folder:
 
 ```powershell
-pwsh -NoProfile -File .github/scripts/check-package.ps1
+cd "D:\Downloads\agent-task-handoff"
+```
+
+The `.` in the next commands means **this current folder**. It must contain `.agents/plugins/marketplace.json`. The repository validation described above is optional but recommended before installation.
+
+#### 3. Register or Switch the Marketplace Source
+
+First inspect the registered sources:
+
+```powershell
+codex plugin marketplace list
+```
+
+Find `codex-agent-task-handoff` and compare its listed root with your current repository folder. A path under `.tmp/marketplaces/` is typically a managed snapshot, not your edited checkout. Choose exactly one case:
+
+| What the list shows | What to do |
+| --- | --- |
+| No `codex-agent-task-handoff` entry | Register the local folder with `codex plugin marketplace add .` |
+| Its root is already this local folder | Skip registration and removal; continue to installation |
+| Its root is a GitHub snapshot or another folder | Switch only this marketplace with the two commands below |
+
+For the **different-source case only**:
+
+```powershell
+codex plugin marketplace remove codex-agent-task-handoff
 codex plugin marketplace add .
+```
+
+This changes the registered source, not the downloaded repository's contents. Do not remove unrelated marketplaces. List the sources again and confirm the root is your edited folder. If the same plugin is enabled through another marketplace, keep only the intended copy enabled.
+
+#### 4. Update the Installed Copy
+
+Wait until delegated tasks using this plugin have ended or can safely tolerate the refresh. Then run:
+
+```powershell
 codex plugin add agent-task-handoff@codex-agent-task-handoff
 ```
 
-Refresh the plugin afterward; existing chats may retain old instructions. Use models and efforts your host actually supports. These edits do not connect a new provider or configure its API key.
+Here `agent-task-handoff` is the plugin name and the part after `@` is the marketplace name. This installs or refreshes the copy Codex uses; editing source alone is not enough. Same-version reinstall refreshed changed files in our local test, so a version bump is not mandatory.
+
+Refresh/reload the plugin as supported by your host. If a restart is needed, finish other active work first. Existing chats may retain old instructions; use the refreshed entries for new work. Confirm the installed route text reflects your edit, then verify actual model/effort on the next authorized dispatch. Installation success alone is not proof of a model invocation.
+
+Marketplace behavior is documented in the [official plugin guide](https://developers.openai.com/plugins/build/plugins). This procedure changes local dispatch instructions, not account permissions, provider access, or the public repository.

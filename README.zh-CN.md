@@ -6,7 +6,7 @@
 
 版本：**0.1.3**。作者：**yueanipy**。插件及 Skill 显示名称只描述职责，不含模型名。仓库及插件/Skill 命名空间为 `agent-task-handoff`。
 
-## 为什么使用本项目
+## 本项目优势
 
 适合需要持续实施、希望规划与验收有独立职责的任务，不必每次重新说明整套交接方式。
 
@@ -97,71 +97,18 @@ pwsh -NoProfile -File .github/scripts/check-package.ps1
 
 检查覆盖打包结构、引用、运行规则语言及调用策略，不启动模型会话，也不证明整个委派链已通过实测。0.1.3 更新显示名称、包标识及面向用户的文档，不改变既有职责边界或模型路由；本次更名更新未重新运行自然路由及回传测试。
 
-## 下载仓库后手动修改模型
+## 手动修改模型
 
-以下以**完整仓库已下载到本机**为前提。命令在仓库根目录执行，即本 README 和 `.agents/plugins/marketplace.json` 所在位置。Release 的纯插件 ZIP 不包含 marketplace 和仓库核验脚本。
+下载**完整仓库**后：
 
-### 修改源文件中的派发规则
-
-模型路由是 Markdown 指令，不是集中式模型配置，也不会自动接入提供方。编辑 [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md) 的 **Routes and Pinning** 部分：
-
-| 路由 | 当前模型 ID | 当前强度 |
-| --- | --- | --- |
-| 用户选择的架构模型 | `gpt-6-astra` | 用户选择，回传不固定强度 |
-| 委派实施模型 | `gpt-6.1-sol` | `high` |
-| 机械执行模型 | `gpt-6-luna` | `max` |
-| 外部审查模型 | `deepseek/deepseek-flash` | `max`，须核验提供方、版本及支持情况 |
-
-使用宿主或提供方真实支持的完整模型 ID 和强度。`deepseek-flash` 只有在确实解析到已核验 reviewer 时才可作为别名。修改文字不等于获得模型访问权，也不配置凭据。
-
-在同一职责内更新实施或机械模型时，保留职责归属、回传设置及身份核验边界。直接使用 Sol 的任务保留用户实际设置，Astra 的强度仍由用户决定。如果用其他模型家族替换 Astra 或 DeepSeek，还需同步调整模型特定的职责、入口描述和提供方核验；不能只换一个 ID。
-
-### 同步相关描述
-
-搜索包内的模型名称和强度标签：
-
-```powershell
-Get-ChildItem ./plugins/agent-task-handoff -Recurse -File |
-  Select-String -Pattern 'gpt-|deepseek|Sol High|Luna Max|Flash Max'
-```
-
-只修改已经不准确的描述，包括架构入口中的 `Sol High`、机械入口中的 `Luna Max`、reviewer/提供方说明，以及本 README 的角色表。角色名称变化时检查 `agents/openai.yaml`。保留 Skill ID、授权、证据、只读审查和恢复边界。身份脚本通过参数接收预期模型及强度，不是另一份写死模型的配置表。
-
-为本地版本修改 [plugin.json](plugins/agent-task-handoff/plugin.json) 中的 `version`，让安装缓存可区分，再运行：
+1. 打开 [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md)，在 **Routes and Pinning** 中修改模型 ID 和思考强度，同步 Skill 内相关名称和模型判断。保留职责边界，Astra 强度仍由用户选择。
+2. 增加 [plugin.json](plugins/agent-task-handoff/plugin.json) 的版本号。
+3. 没有正在执行的委派任务时，在仓库根目录重新安装。若此前已登记这个 marketplace，先运行 `codex plugin marketplace remove codex-agent-task-handoff`，然后执行：
 
 ```powershell
 pwsh -NoProfile -File .github/scripts/check-package.ps1
-```
-
-此检查不能证明替换模型或强度实际可用。
-
-### 重新安装本地版本
-
-修改下载的仓库**不会自动修改已安装的 GitHub 快照**。先查看登记的来源：
-
-```text
-codex plugin marketplace list
-```
-
-如果 `codex-agent-task-handoff` 已指向 GitHub 或其他本地副本，先切换这个 marketplace 的来源：
-
-```text
-codex plugin marketplace remove codex-agent-task-handoff
-```
-
-然后在修改后的仓库根目录执行：
-
-```text
 codex plugin marketplace add .
 codex plugin add agent-task-handoff@codex-agent-task-handoff
 ```
 
-确认来源指向当前本地仓库，安装版本是自己的修改版。活跃 worker 仍依赖来源或缓存路径时，不进行刷新，先完成工作或安全保存检查点。关闭其他 marketplace 的重复入口，再按宿主要求刷新或重新加载插件。已有聊天可能保留已加载的旧指令，因此下次经授权派发时仍须核验实际模型和强度。
-
-此操作无需编辑安装缓存、账号凭据或全局 `config.toml` 的默认模型。修改的是本地派发规则，不会改变账号权限、现有聊天设置或公开仓库。
-
-## 从旧版本迁移
-
-本仓库替代原来的 `agent-workflows` 包。新安装和提示词使用 `agent-task-handoff`，安装命令不依赖旧 GitHub 仓库。使用新版入口前关闭旧插件和重复的独立 Skill。如果个人规则引用了旧命名空间，只调整相应引用，不整体复制账号配置。
-
-迁移时不改写历史证据，也不自动重启已有 worker。活跃任务仍依赖旧本地文件或缓存路径时，保留这些路径；已有聊天可能继续使用已加载的指令，新任务使用改名后的包。任务记录独立于两个仓库，发布新版不会删除它们。
+完成后刷新插件；已有聊天可能仍使用旧规则。模型和强度必须由宿主实际支持，修改这些文件不会自动接入提供方或配置 API 密钥。

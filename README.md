@@ -6,7 +6,7 @@ A multi-model agent delegation plugin for Codex, with Astra-led planning and acc
 
 Version: **0.1.3**. Author: **yueanipy**. Plugin and skill display names describe their roles without model names. Repository and plugin/skill namespace: `agent-task-handoff`.
 
-## Why Use This Project
+## Project Advantages
 
 Use it for sustained work where planning, implementation and acceptance benefit from distinct roles, without having to repeat the handoff instructions for every task.
 
@@ -97,71 +97,18 @@ pwsh -NoProfile -File .github/scripts/check-package.ps1
 
 This checks packaging, references, runtime language and invocation policy; it does not run model chats or prove end-to-end delegation. Release 0.1.3 updates display names, package identifiers and human-facing documentation, not the established role boundaries or model routes. Natural routing and callback behavior have not been rerun for this naming update.
 
-## Customize Models in a Downloaded Repository
+## Change Models Locally
 
-These instructions assume the **full repository** is already on your computer. Run commands from its root, where this README and `.agents/plugins/marketplace.json` reside. The release's plugin-only ZIP does not include that marketplace or repository validation script.
+After downloading the **full repository**:
 
-### Edit the Source Policy
-
-The routes are Markdown instructions, not a central model configuration or automatic provider setup. Edit [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md), specifically **Routes and Pinning**:
-
-| Route | Current model ID | Current effort |
-| --- | --- | --- |
-| Selected architect | `gpt-6-astra` | User-selected; do not hardcode callback effort |
-| Delegated implementer | `gpt-6.1-sol` | `high` |
-| Mechanical worker | `gpt-6-luna` | `max` |
-| External reviewer | `deepseek/deepseek-flash` | `max`; provider/version/support must be verified |
-
-Use an exact model ID and effort your host/provider actually supports. `deepseek-flash` is only an alias when it resolves to the verified reviewer. Changing text does not grant model access or configure its credentials.
-
-For an implementer/worker model update within the same role, preserve role ownership, callback settings and verification boundaries. Direct Sol keeps its selected settings; Astra effort remains the user's choice. Replacing Astra or DeepSeek with a different model family also requires updating the model-specific ownership, discovery and provider checks; changing one ID alone is insufficient.
-
-### Keep Labels Consistent
-
-Search the package for model names and effort labels:
-
-```powershell
-Get-ChildItem ./plugins/agent-task-handoff -Recurse -File |
-  Select-String -Pattern 'gpt-|deepseek|Sol High|Luna Max|Flash Max'
-```
-
-Update only descriptions that became inaccurate, including `Sol High` in the architect entry, `Luna Max` in the mechanical entry, reviewer/provider wording and this README's role table. Check `agents/openai.yaml` if a role label changes. Keep skill IDs, authorization, evidence, read-only review and recovery boundaries intact. The identity script accepts expected settings as parameters; it is not another hardcoded model registry.
-
-Increment `version` in [plugin.json](plugins/agent-task-handoff/plugin.json) for your local variant so its install cache is distinguishable, then validate:
+1. Edit **Routes and Pinning** in [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md) to change the model ID and effort. Update related names and model checks in the skills. Keep role boundaries intact; Astra effort remains user-controlled.
+2. Increase the version in [plugin.json](plugins/agent-task-handoff/plugin.json).
+3. With no active delegated tasks, reinstall from the repository root. If this marketplace was previously registered, first run `codex plugin marketplace remove codex-agent-task-handoff`, then:
 
 ```powershell
 pwsh -NoProfile -File .github/scripts/check-package.ps1
-```
-
-This check does not prove that the replacement model or effort is available.
-
-### Install Your Local Variant
-
-Edits to a downloaded repository do **not** automatically change an installed GitHub snapshot. Inspect the registered source first:
-
-```text
-codex plugin marketplace list
-```
-
-If `codex-agent-task-handoff` is already registered to GitHub or a different checkout, switch that marketplace source before installing:
-
-```text
-codex plugin marketplace remove codex-agent-task-handoff
-```
-
-Then, from your modified repository root:
-
-```text
 codex plugin marketplace add .
 codex plugin add agent-task-handoff@codex-agent-task-handoff
 ```
 
-Confirm the listed source is your local repository and the installed version is your variant. Do not run a source/cache refresh while active workers depend on it; finish or safely checkpoint that work first. Disable duplicate copies from other marketplaces, then refresh/reload the plugin as required by your host. Existing chats can retain previously loaded instructions, so verify actual model/effort on the next authorized dispatch.
-
-Do not edit the installed cache, account credentials or global `config.toml` model defaults for this operation. This changes the local dispatch policy, not account permissions, existing chat settings or the public repository.
-
-## Moving from the Previous Package
-
-This repository replaces the previous `agent-workflows` package. New installs and prompts use `agent-task-handoff`; no installation command depends on the previous GitHub repository. Disable the old plugin and duplicate standalone skills before using the new entries. If personal instructions name the old namespace, update those references, without copying a full account configuration.
-
-Do not rewrite historical evidence or automatically restart existing workers during migration. Preserve old local files/cache paths while active assignments depend on them; existing chats may retain their loaded instructions. New work uses the renamed package. Task records remain separate from either repository and are not deleted by publishing this package.
+Refresh the plugin afterward; existing chats may retain old instructions. Use models and efforts your host actually supports. These edits do not connect a new provider or configure its API key.

@@ -124,7 +124,25 @@ marketplace 来源登记，避免影响正在运行的任务。如果目标模�
 我的模型要求：<在这里添加想使用的模型及思考等级>
 ```
 
-### 方案二：自己手动修改
+### 方案二：直接打开文件修改（最小改动）
+
+如果下载的仓库已经登记为本地插件来源，不需要复制文件，也不需要反复登记 marketplace。
+
+1. 直接打开 [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md)，在 **Routes and Pinning** 中修改目标角色的 `model` 和 `effort`。例如，仅把 `high` 改为 `medium`，改变的是思考等级，不是模型。模型和等级须由宿主实际支持。
+2. 在插件的 `skills/` 目录搜索旧模型或等级，同步相关指令，例如改成 Medium 后仍写着的 `Sol High`；README 中对应标签也同步。不替换无关角色，不删除身份核验。如果更换模型家族或 DeepSeek/提供方时不确定如何同步，使用方案一。
+3. 等依赖该插件的委派任务结束后，更新安装副本：
+
+```powershell
+codex plugin add agent-task-handoff@codex-agent-task-handoff
+```
+
+`@` 后面应当是自己已登记的 marketplace 名称。然后按宿主支持的方式刷新或重新加载插件。已有聊天可能仍保留旧指令，下次经授权派发时核验实际设置。
+
+**最小流程：打开源码文件 → 修改路由及相关指令 → 更新安装副本。** 本地版本号可不改。不要直接编辑安装缓存，刷新时可能被覆盖。此操作不修改全局默认模型、账号凭据或用户选择的 Astra 强度，也不会接入新的提供方。
+
+首次登记本地来源、切换来源或需要逐步终端说明时，使用下面的方案三。
+
+### 方案三：详细手动教程
 
 #### 1. 修改模型和思考等级
 

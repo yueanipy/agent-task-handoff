@@ -127,7 +127,25 @@ results and anything not verified.
 My model choices: <add your desired models and reasoning levels here>
 ```
 
-### Option 2: Edit the Files Yourself
+### Option 2: Open the File Directly (Minimal Edit)
+
+If the downloaded repository is already registered as your local plugin source, no copying or repeated marketplace registration is needed.
+
+1. Open [model-verification.md](plugins/agent-task-handoff/skills/architect-implementer/references/model-verification.md) directly. Under **Routes and Pinning**, change the intended route's `model` ID and `effort`. For example, changing only `high` to `medium` changes the reasoning level, not the model. Use settings your host actually supports.
+2. Search the plugin's `skills/` folder for the old model/level and synchronize relevant instructions, such as `Sol High` if the new effort is Medium. Update matching README labels too. Do not replace unrelated roles or remove identity checks. For model-family or DeepSeek/provider changes you are unsure about, use Option 1.
+3. After delegated tasks depending on the plugin have ended, update the installed copy:
+
+```powershell
+codex plugin add agent-task-handoff@codex-agent-task-handoff
+```
+
+The part after `@` must be your registered marketplace name. Then refresh/reload the plugin as supported by your host. Existing chats may retain old instructions; verify actual settings on the next authorized dispatch.
+
+**In short: open the source file → change the route and matching instructions → update the installed copy.** A local version bump is optional. Do not edit the installation cache directly: a refresh may overwrite it. This does not change global defaults, account credentials or your selected Astra effort, and it does not connect a new provider.
+
+For first-time registration, source switching or step-by-step terminal guidance, use Option 3 below.
+
+### Option 3: Detailed Manual Setup
 
 #### 1. Change the Model and Effort
 

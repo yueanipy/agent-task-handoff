@@ -1,0 +1,6 @@
+interface:
+  display_name: "Mechanical Delegation"
+  short_description: "Explicit Luna delegation from Astra or Sol"
+  default_prompt: "Use $agent-task-handoff:sol-luna-mechanical to delegate the specified mechanical work to Luna and check its results."
+policy:
+  allow_implicit_invocation: false

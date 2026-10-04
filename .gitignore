@@ -1,0 +1,10 @@
+.env*
+auth.json
+config.toml
+*.jsonl
+*.log
+*.key
+*.pem
+node_modules/
+__pycache__/
+artifacts/

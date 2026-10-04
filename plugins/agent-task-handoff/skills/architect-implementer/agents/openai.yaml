@@ -1,0 +1,6 @@
+interface:
+  display_name: "Plan and Delegate"
+  short_description: "Astra-led planning, handoff and acceptance"
+  default_prompt: "Use $agent-task-handoff:architect-implementer for this agent implementation plan, handoff or acceptance; preserve a plan-only request."
+policy:
+  allow_implicit_invocation: true

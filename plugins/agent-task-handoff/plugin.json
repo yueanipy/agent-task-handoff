@@ -1,0 +1,12 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "agent-task-handoff",
+  "version": "0.1.3",
+  "description": "Multi-model agent delegation plugin for Codex: Astra planning and acceptance, Sol implementation, optional Luna and read-only DeepSeek review.",
+  "extensions": {
+    "com.openai": {
+      "author": { "name": "yueanipy" },
+      "interface": { "displayName": "Agent Task Handoff", "shortDescription": "Delegate, review and recover" }
+    }
+  }
+}

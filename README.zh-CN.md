@@ -40,6 +40,12 @@
 - DeepSeek 外审需要另行配置并核验支持 Max 的 DeepSeek 提供方。本仓库不包含路由代理、API 密钥或模型接入配置。
 - 身份核验辅助脚本需要 PowerShell 和可读取的本地 Codex 会话元数据。默认检查点位置面向 Windows。
 
+### 完整外审流程需要先接入 DeepSeek
+
+要在 Codex 内完整运行 **Astra → Sol → DeepSeek 外审 → Sol 修复 → Astra 验收**，必须先将 DeepSeek 接入为 Codex 真正可调用的模型路线，并具备所需模型、强度及会话通信能力。安装本插件**不会**自动接入 DeepSeek，也不会配置提供方、密钥或本地客户端。
+
+未接入时，Astra/Sol 主流程仍可运行，但必要的 DeepSeek 外审会处于阻碍状态，不能宣称已完成。如果改用本机另行配置的 DeepSeek 工具，需要明确提出，例如：**“使用本机已配置的 DeepSeek 工具进行本次审查”**，并指定可访问的工具或调用方式。仅在电脑上安装客户端或保存密钥并不够。插件不会自行查找、启动本地 DeepSeek 软件；外部工具也不会自动具备 Codex 原生会话回传能力。
+
 ## 安装
 
 本仓库的 marketplace 只提供 `agent-task-handoff`，不等于自动提交到公开 Plugins Directory。

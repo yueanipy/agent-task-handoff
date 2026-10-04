@@ -40,6 +40,12 @@ The goal is less unnecessary orchestration with accountable acceptance, not the 
 - DeepSeek review additionally requires a separately configured, verified DeepSeek provider with Max support. This repository contains no provider proxy, API key or model setup.
 - The identity helper uses PowerShell and readable local Codex session metadata. The default checkpoint location is Windows-oriented.
 
+### DeepSeek Setup Is Required for the Full Review Flow
+
+To complete the full **Astra → Sol → DeepSeek review → Sol fixes → Astra acceptance** flow inside Codex, DeepSeek must first be connected as an actually callable Codex model route, with the required model/effort and chat messaging available. Installing this plugin does **not** connect DeepSeek or configure its provider, credentials or a local client.
+
+Without that connection, the Astra/Sol workflow can still run, but a required DeepSeek review remains blocked and must not be reported as completed. To use a separately configured local DeepSeek tool instead, explicitly request it, for example: **“Use my locally configured DeepSeek tool for this review,”** and identify the accessible tool/call method. Having a client or key on the computer is not enough. The plugin does not automatically discover or launch local DeepSeek applications, and an external tool does not automatically provide native Codex chat callbacks.
+
 ## Install
 
 This repository exposes only `agent-task-handoff` through its own marketplace. It is not an automatic submission to the public Plugins Directory.
